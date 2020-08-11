@@ -56,28 +56,41 @@ TODO:
     oldNum = parseFloat(oldNum);
     theNum = parseFloat(theNum);
 
+    var op = "";
     // Perform operation
     switch (operator) {
       case "plus":
-        resultNum = oldNum + theNum;
+        op = "suma";
         break;
-
       case "minus":
-        resultNum = oldNum - theNum;
+        op = "resta";
         break;
-
       case "times":
-        resultNum = oldNum * theNum;
+        op = "multiplicacion";
         break;
-
-      case "divided by":
-        resultNum = oldNum / theNum;
+        op = "division";
         break;
-
-        // If equal is pressed without an operator, keep number and continue
       default:
-        resultNum = theNum;
+        op = "none";
     }
+
+    if(op != "none"){
+      jQuery.ajax
+      ({
+        type: "GET",
+        url: "http://34.222.83.145:3000/" + op + "?n1=" + oldNum + "&n2=" + theNum,
+        success: function (data) {
+          resultNum = parseFloat(data);
+        },
+        error:function(data){
+          alert("Hubo un error tratando de obtener la metadata");
+        }
+      })
+    }
+    else {
+      resultNum = 0;
+    }
+
 
     // If NaN or Infinity returned
     if (!isFinite(resultNum)) {
