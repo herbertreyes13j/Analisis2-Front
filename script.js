@@ -81,6 +81,25 @@ TODO:
         url: "http://34.222.83.145:3000/" + op + "?n1=" + oldNum + "&n2=" + theNum,
         success: function (data) {
           resultNum = parseFloat(data);
+
+          // If NaN or Infinity returned
+          if (!isFinite(resultNum)) {
+            if (isNaN(resultNum)) { // If result is not a number; set off by, eg, double-clicking operators
+              resultNum = "You broke it!";
+            } else { // If result is infinity, set off by dividing by zero
+              resultNum = "Look at what you've done";
+              el('#calculator').classList.add("broken"); // Break calculator
+              el('#reset').classList.add("show"); // And show reset button
+            }
+          }
+
+          // Display result, finally!
+          viewer.innerHTML = resultNum;
+          equals.setAttribute("data-result", resultNum);
+
+          // Now reset oldNum & keep result
+          oldNum = 0;
+          theNum = resultNum;
         },
         error:function(data){
           alert("Hubo un error tratando de obtener la metadata");
@@ -90,27 +109,6 @@ TODO:
     else {
       resultNum = 0;
     }
-
-
-    // If NaN or Infinity returned
-    if (!isFinite(resultNum)) {
-      if (isNaN(resultNum)) { // If result is not a number; set off by, eg, double-clicking operators
-        resultNum = "You broke it!";
-      } else { // If result is infinity, set off by dividing by zero
-        resultNum = "Look at what you've done";
-        el('#calculator').classList.add("broken"); // Break calculator
-        el('#reset').classList.add("show"); // And show reset button
-      }
-    }
-
-    // Display result, finally!
-    viewer.innerHTML = resultNum;
-    equals.setAttribute("data-result", resultNum);
-
-    // Now reset oldNum & keep result
-    oldNum = 0;
-    theNum = resultNum;
-
   };
 
   // When: Clear button is pressed. Clear everything
