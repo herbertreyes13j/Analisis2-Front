@@ -68,6 +68,7 @@ TODO:
       case "times":
         op = "multiplicacion";
         break;
+      case "divided by":
         op = "division";
         break;
       default:
